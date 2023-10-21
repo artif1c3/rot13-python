@@ -1,6 +1,7 @@
 import string
 
 # Attempt to recreate the ROT13 cipher in Python
+# Cannot handle special characters !@#$%^&*()-=_+`~
 
 def rot13encrypt(plaintext, length, letters, numbers):
     cipher_text = ''
@@ -25,6 +26,27 @@ def rot13encrypt(plaintext, length, letters, numbers):
 
     return cipher_text
 
+def rot13decrypt(ciphertext, length, letters, numbers):
+    plaintext = ''
+
+    for index in range(length):
+        character = ciphertext[index]
+
+        if character == ' ':
+            plaintext += ' '
+
+        if character in numbers:
+            plaintext += character
+
+        if character in letters:
+            try:
+                decryptcipher = letters.index(character) - 13
+                plaintext += letters[decryptcipher]
+            except IndexError:
+                decryptcipher = decryptcipher + 26
+                plaintext += letters[decryptcipher]
+
+    return plaintext
 
 if __name__ == '__main__':
     plaintext = input('Enter a message to encrypt: ')
@@ -37,3 +59,6 @@ if __name__ == '__main__':
     
     cipher_text = rot13encrypt(plaintext, length, letters, numbers)
     print(cipher_text.capitalize())
+
+    plaintext = rot13decrypt(cipher_text, length, letters, numbers)
+    print(plaintext)
